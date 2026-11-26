@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const authRoutes = require('./auth');
+const adminRoutes = require('./admin'); // BARU
 const requireAuth = require('./middleware');
 const routes = require('./routes');
 
@@ -21,6 +22,9 @@ app.get('/', (req, res) => {
   res.json({ status: 'ok' });
 });
 app.use('/api/auth', authRoutes);
+
+// Dilindungi: kelola admin (harus di atas /api)
+app.use('/api/admin', requireAuth, adminRoutes); // BARU
 
 // Dilindungi: semua endpoint mahasiswa wajib token
 app.use('/api', requireAuth, routes);
